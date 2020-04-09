@@ -1,5 +1,5 @@
 name: KitpvpCore
-description: Custom join/leave messages and events for your server.
+description: KitPvP Core for PM servers.
 main: Dapro718\KitpvpCore\Main
 version: 0.0.1
 api: 3.11.6
