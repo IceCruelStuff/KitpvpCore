@@ -34,11 +34,11 @@ class EventListener implements Listener {
       if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
         if($tile instanceof Sign) {
           $line = $tile->getText();
-          $playerLevel = $this->getInstance()->getPlayerLevel($player);
+          $playerLevel = getPlayerLevel($player);
           $arena = $line[1];
-          $this->getInstance()->joinArena($player, $playerLevel, $arena);
+          $this->joinArena($player, $playerLevel, $arena);
           $data = new Config($this->getDataFolder() . "arenas.yml", Config::YMAL);
-          $tile->setLine(2, $data->get($arena . $playerLevel). " Players.");
+          $tile->setLine(2, $data->get($arena . $playerLevel) . " Players.");
         }
       }
   }
