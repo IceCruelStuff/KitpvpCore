@@ -16,12 +16,12 @@ class Main extends PluginBase implements Listener{
   public $joinleave;
 
   public function onLoad(): void {
-      $this->getLogger()->info("KitPvP Loaded");
+      $this->getLogger()->info("Loaded");
   }
   
   
   public function onEnable() {
-      $this->getLogger()->info("KitPvP Enabled");
+      $this->getLogger()->info("Enabled");
       $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
       $this->config = $this->getConfig();
       $this->joinleave = new JoinLeaveEvents();
@@ -31,6 +31,6 @@ class Main extends PluginBase implements Listener{
   
   
   public function onDisable(): void {
-      $this->getLogger()->info("KitPvP Disabled");
+      $this->getLogger()->info("Disabled");
   }
 }
