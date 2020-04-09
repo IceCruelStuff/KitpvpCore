@@ -23,10 +23,7 @@ class EventListener implements Listener {
   public function __construct($plugin) {
       $this->plugin = $plugin;
   }
-  public function __construct($joinLeave) {
-      $this->joinleave = $joinLeave;
-  }
-  
+
   public function onInteract(PlayerInteractEvent $event) {
       $block = $event->getBlock();
       $player = $event->getPlayer();
@@ -42,4 +39,35 @@ class EventListener implements Listener {
         }
       }
   }
+  
+  
+  public function getArenaPlayerCount($playerLevel, $arena) {
+    $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
+    return (int) $config->get($arena . $playerLevel);
+  }
+
+    
+  public function getPlayerLevel($player) {
+    $pureperms = $this->getServer()->gePluginManager()->getPlugin("PurePerms");
+    $group = $pureperms->getUserDataMrg()->getGroup($player);
+    $groupname = $group->getName();
+    if($groupname === "Leather"){
+      return 1;
+    } elseif ($groupname === "Chain") {
+      return 1;
+    } elseif ($groupname === "Iron") {
+      return 1;
+    } elseif ($groupname === "Diamond") {
+      return 2;
+    } elseif ($groupname === "Lapis") {
+      return 2;
+    } elseif ($groupname === "Emerald") {
+      return 2;
+    } elseif ($groupname === "Obsidian") {
+      return 3;
+    } elseif ($groupname === "Bedrock") {
+      return 3;
+    }
+  }
+}
 }
