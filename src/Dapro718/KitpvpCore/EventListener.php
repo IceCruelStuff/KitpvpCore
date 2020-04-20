@@ -24,7 +24,7 @@ class EventListener implements Listener {
   public $data;
   
   
-  public function __construct($plugin) {
+  public function __construct(Main $plugin) {
       $this->plugin = $plugin;
   }
 
