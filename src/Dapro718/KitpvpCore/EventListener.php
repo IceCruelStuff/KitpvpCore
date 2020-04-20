@@ -77,7 +77,7 @@ class EventListener implements Listener {
   public function getArenaPlayerCount($playerLevel, $arena) {
     $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
     $count = $this->config->get($arena . $playerLevel);
-    return $count
+    return $count;
     $this->getLogger()->info("Arena data fetched: $arena with $count players");
   }
 
