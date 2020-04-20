@@ -14,6 +14,7 @@ use pocketmine\Player;
 use pocketmine\event\Level;
 use pocketmine\utils\Config;
 use pocketmine\level\Position;
+use pocketmine\Server;
 
 class EventListener implements Listener {
   
