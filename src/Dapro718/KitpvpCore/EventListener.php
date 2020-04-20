@@ -20,8 +20,9 @@ class EventListener implements Listener {
   public $plugin;
   public $joinleave;
   
-  public function __construct($plugin) {
+  public function __construct($plugin, $joinleave) {
       $this->plugin = $plugin;
+      $this->joinLeave = $joinLeave;
   }
 
   public function onInteract(PlayerInteractEvent $event) {
