@@ -21,14 +21,15 @@ class EventListener implements Listener {
   public $joinleave;  
   public $prefix;
   public $data;
-  $prefix = "§l§8[§1KitPvP§8]§r";
   
   
   public function __construct($plugin) {
       $this->plugin = $plugin;
   }
 
+  
   public function onInteract(PlayerInteractEvent $event) {
+      $prefix = "§l§8[§1KitPvP§8]§r";
       $block = $event->getBlock();
       $player = $event->getPlayer();
       $tile = $player->getLevel()->getTile($block);
