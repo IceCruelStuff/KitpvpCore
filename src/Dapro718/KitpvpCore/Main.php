@@ -24,9 +24,6 @@ class Main extends PluginBase implements Listener{
       $this->getLogger()->info("Enabled");
       $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
       $this->config = $this->getConfig();
-      $this->joinleave = new JoinLeaveEvents();
-      $this->getServer()->getPluginManager()->joinleave(new EventListener($this, $this->joinleave), $this);
-      
   }
   
   
