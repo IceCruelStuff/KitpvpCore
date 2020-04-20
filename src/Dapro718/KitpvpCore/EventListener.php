@@ -49,7 +49,7 @@ class EventListener implements Listener {
 
   public function joinArena($player, $playerLevel, $arena) {
     if($playerLevel === 3) {
-      $player->sendMessage($prefix . "§aYou have joined the $arena arena.");
+      $player->sendMessage($this->prefix . "§aYou have joined the $arena arena.");
       $player->teleport(new Position($this->config->get($arena . $playerLevel . "-x"), $this->config->get($arena . $playerLevel . "-y"), $this->config->get($arena . $playerLevel . "-z")));
       $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
       $data->set($arena . $playerLevel, $this->getArenaPlayerCount($playerLevel, $arena) + 1);
@@ -74,7 +74,7 @@ class EventListener implements Listener {
   
   public function getArenaPlayerCount($playerLevel, $arena) {
     $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
-    return (int) $config->get($arena . $playerLevel);
+    return (int) $this->config->get($arena . $playerLevel);
   }
 
     
