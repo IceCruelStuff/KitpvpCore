@@ -53,6 +53,7 @@ class EventListener implements Listener {
       $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
       $data->set($arena . $playerLevel, $this->getArenaPlayerCount($playerLevel, $arena) + 1);
       $data->save();
+      $this->getLogger()->info("$player has joined $arena in level $playerlevel");
     }
     if($playerLevel === 2) {
       $player->sendMessage($this->prefix . "§aYou have joined the $arena arena.");
@@ -60,6 +61,7 @@ class EventListener implements Listener {
       $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
       $data->set($arena . $playerLevel, $this->getArenaPlayerCount($playerLevel, $arena) + 1);
       $data->save();
+      $this->getLogger()->info("$player has joined $arena in level $playerlevel");
     }
     if($playerLevel === 1) {
       $player->sendMessage($this->prefix . "§aYou have joined the $arena arena.");
@@ -67,13 +69,16 @@ class EventListener implements Listener {
       $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
       $data->set($arena . $playerLevel, $this->getArenaPlayerCount($playerLevel, $arena) + 1);
       $data->save();
+      $this->getLogger()->info("$player has joined $arena in level $playerlevel");
     }
   }
   
   
   public function getArenaPlayerCount($playerLevel, $arena) {
     $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
-    return (int) $this->config->get($arena . $playerLevel);
+    $count = $this->config->get($arena . $playerLevel);
+    return $count
+    $this->getLogger()->info("Arena data fetched: $arena with $count players");
   }
 
     
@@ -81,6 +86,7 @@ class EventListener implements Listener {
     $pureperms = $this->plugin->getServer()->gePluginManager()->getPlugin("PurePerms");
     $group = $pureperms->getUserDataMrg()->getGroup($player);
     $groupname = $group->getName();
+    $this->getLogger->info("Player group fetched: $player is $groupname");
     if($groupname === "Leather"){
       return 1;
     } elseif ($groupname === "Chain") {
