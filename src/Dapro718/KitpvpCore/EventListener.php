@@ -15,7 +15,8 @@ use pocketmine\event\Level;
 use pocketmine\utils\Config;
 use pocketmine\level\Position;
 use pocketmine\Server;
-
+use Dapro718\KitpvpCore\Main
+  
 class EventListener implements Listener {
   
   public $plugin;
