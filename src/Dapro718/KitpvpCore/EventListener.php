@@ -86,7 +86,7 @@ class EventListener implements Listener {
 
     
   public function getPlayerLevel($player) {
-    $pureperms = $this->plugin->getServer()->gePluginManager()->getPlugin("PurePerms");
+    $pureperms = $this->plugin->getServer()->getPluginManager()->getPlugin("PurePerms");
     $group = $pureperms->getUserDataMrg()->getGroup($player);
     $groupname = $group->getName();
     $this->plugin->getServer()->broadcastMessage("Player group fetched: $player is $groupname");
