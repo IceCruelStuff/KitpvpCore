@@ -12,13 +12,14 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\Player;
 use pocketmine\event\Level;
+use pocketmine\utils\Config;
 use Dapro718\KitpvpCore\JoinLeaveEvents;
 
 
 class EventListener implements Listener {
   
   public $plugin;
-  public $joinleave;  
+  public $config;  
   public $prefix;
   public $data;
   
