@@ -40,7 +40,7 @@ class EventListener implements Listener {
           $playerLevel = getPlayerLevel($player);
           $arena = $line[1];
           $this->joinArena($player, $playerLevel, $arena);
-          $data = new Config($this->getDataFolder() . "arenas.yml", Config::YMAL);
+          $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
           $tile->setLine(2, $data->get($arena . $playerLevel) . " Players.");
         }
       }
@@ -56,14 +56,14 @@ class EventListener implements Listener {
       $data->save();
     }
     if($playerLevel === 2) {
-      $player->sendMessage($prefix . "§aYou have joined the $arena arena.");
+      $player->sendMessage($this->prefix . "§aYou have joined the $arena arena.");
       $player->teleport(new Position($this->config->get($arena . $playerLevel . "-x"), $this->config->get($arena . $playerLevel . "-y"), $this->config->get($arena . $playerLevel . "-z")));
       $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
       $data->set($arena . $playerLevel, $this->getArenaPlayerCount($playerLevel, $arena) + 1);
       $data->save();
     }
     if($playerLevel === 1) {
-      $player->sendMessage($prefix . "§aYou have joined the $arena arena.");
+      $player->sendMessage($this->prefix . "§aYou have joined the $arena arena.");
       $player->teleport(new Position($this->config->get($arena . $playerLevel . "-x"), $this->config->get($arena . $playerLevel . "-y"), $this->config->get($arena . $playerLevel . "-z")));
       $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
       $data->set($arena . $playerLevel, $this->getArenaPlayerCount($playerLevel, $arena) + 1);
