@@ -35,6 +35,7 @@ class EventListener implements Listener {
       $block = $event->getBlock();
       $player = $event->getPlayer();
       $tile = $player->getLevel()->getTile($block);
+      $this->plugin->getServer()->broadcastMessage("Event activated");
       if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
         if($tile instanceof Sign) {
           $line = $tile->getText();
@@ -88,7 +89,7 @@ class EventListener implements Listener {
     $pureperms = $this->plugin->getServer()->gePluginManager()->getPlugin("PurePerms");
     $group = $pureperms->getUserDataMrg()->getGroup($player);
     $groupname = $group->getName();
-    $this-plugin->>getServer()->broadcastMessage("Player group fetched: $player is $groupname");
+    $this->plugin->getServer()->broadcastMessage("Player group fetched: $player is $groupname");
     if($groupname === "Leather"){
       return 1;
     } elseif ($groupname === "Chain") {
