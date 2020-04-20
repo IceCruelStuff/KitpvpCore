@@ -18,11 +18,14 @@ use Dapro718\KitpvpCore\JoinLeaveEvents;
 class EventListener implements Listener {
   
   public $plugin;
-  public $joinleave;
+  public $joinleave;  
+  public $prefix;
+  public $data;
+  $prefix = "§l§8[§1KitPvP§8]§r";
   
-  public function __construct($plugin, $joinleave) {
+  
+  public function __construct($plugin) {
       $this->plugin = $plugin;
-      $this->joinLeave = $joinLeave;
   }
 
   public function onInteract(PlayerInteractEvent $event) {
@@ -39,6 +42,31 @@ class EventListener implements Listener {
           $tile->setLine(2, $data->get($arena . $playerLevel) . " Players.");
         }
       }
+  }
+  
+
+  public function joinArena($player, $playerLevel, $arena) {
+    if($playerLevel === 3) {
+      $player->sendMessage($prefix . "§aYou have joined the $arena arena.");
+      $player->teleport(new Position($this->config->get($arena . $playerLevel . "-x"), $this->config->get($arena . $playerLevel . "-y"), $this->config->get($arena . $playerLevel . "-z")));
+      $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
+      $data->set($arena . $playerLevel, $this->getArenaPlayerCount($playerLevel, $arena) + 1);
+      $data->save();
+    }
+    if($playerLevel === 2) {
+      $player->sendMessage($prefix . "§aYou have joined the $arena arena.");
+      $player->teleport(new Position($this->config->get($arena . $playerLevel . "-x"), $this->config->get($arena . $playerLevel . "-y"), $this->config->get($arena . $playerLevel . "-z")));
+      $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
+      $data->set($arena . $playerLevel, $this->getArenaPlayerCount($playerLevel, $arena) + 1);
+      $data->save();
+    }
+    if($playerLevel === 1) {
+      $player->sendMessage($prefix . "§aYou have joined the $arena arena.");
+      $player->teleport(new Position($this->config->get($arena . $playerLevel . "-x"), $this->config->get($arena . $playerLevel . "-y"), $this->config->get($arena . $playerLevel . "-z")));
+      $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
+      $data->set($arena . $playerLevel, $this->getArenaPlayerCount($playerLevel, $arena) + 1);
+      $data->save();
+    }
   }
   
   
