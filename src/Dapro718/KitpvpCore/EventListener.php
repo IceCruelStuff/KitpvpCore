@@ -78,7 +78,7 @@ class EventListener implements Listener {
 
     
   public function getPlayerLevel($player) {
-    $pureperms = $this->getServer()->gePluginManager()->getPlugin("PurePerms");
+    $pureperms = $this->plugin->getServer()->gePluginManager()->getPlugin("PurePerms");
     $group = $pureperms->getUserDataMrg()->getGroup($player);
     $groupname = $group->getName();
     if($groupname === "Leather"){
