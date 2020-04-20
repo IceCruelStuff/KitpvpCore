@@ -16,6 +16,7 @@ use pocketmine\utils\Config;
 use pocketmine\level\Position;
 use pocketmine\Server;
 use Dapro718\KitpvpCore\Main;
+use _64FF00\PurePerms\PurePerms;
   
 class EventListener implements Listener {
   
