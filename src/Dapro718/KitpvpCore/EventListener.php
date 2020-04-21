@@ -205,7 +205,7 @@ class EventListener implements Listener {
            
   public function registerPlayer($player) {
     if(!file_exists($this->plugin->getDataFolder() . "Data/" . "{$player}.yml")) {
-      $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML, ["totalKills" => 0, "totalDeaths" => 0, "worth" => 0, "currentArena" => "n/a", "playing" => FALSE];
+      $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML, ["totalKills" => 0, "totalDeaths" => 0, "worth" => 0, "currentArena" => "n/a", "playing" => FALSE]);
     } else {
       return true;
     } 
