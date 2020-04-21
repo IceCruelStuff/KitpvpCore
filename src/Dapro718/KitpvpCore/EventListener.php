@@ -6,6 +6,7 @@ namespace Dapro718\KitpvpCore;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\tile\Sign;
 use pocketmine\block\SignChangeEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -40,9 +41,12 @@ class EventListener implements Listener {
       $this->plugin->getServer()->broadcastMessage("Event activated");
       if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
         if($tile instanceof Sign) {
+          if(!file_exists($this->plugin->getDataFolder() . "Data/" . "{player}.yml") {
+            $this->registerPlayer;
+          }
           $line = $tile->getText();
           $playerLevel = $this->getPlayerLevel($player);
-          $arena = $line[1];
+          $arena = strtolower($line[1]) . $playerLevel;
           $this->joinArena($player, $playerLevel, $arena);
           $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
           $tile->setLine(2, $data->get($arena . $playerLevel) . " Players.");
@@ -56,7 +60,12 @@ class EventListener implements Listener {
       $player->sendMessage($this->prefix . "§aYou have joined the $arena arena.");
       $player->teleport(new Position($this->config->get($arena . $playerLevel . "-x"), $this->config->get($arena . $playerLevel . "-y"), $this->config->get($arena . $playerLevel . "-z")));
       $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
-      $data->set($arena . $playerLevel, $this->getArenaPlayerCount($playerLevel, $arena) + 1);
+      $number = $data->get($arena . $playerLevel);
+      $data->set($arena . $playerLevel, $number + 1)
+      $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
+      $playerData->set("currentArena", $arena . $playerLevel);
+      $playerData->set("playing", TRUE);
+      $playerData->save();
       $data->save();
       $this->plugin->getServer()->broadcastMessage("$player has joined $arena in level $playerLevel");
     }
@@ -64,7 +73,12 @@ class EventListener implements Listener {
       $player->sendMessage($this->prefix . "§aYou have joined the $arena arena.");
       $player->teleport(new Position($this->config->get($arena . $playerLevel . "-x"), $this->config->get($arena . $playerLevel . "-y"), $this->config->get($arena . $playerLevel . "-z")));
       $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
-      $data->set($arena . $playerLevel, $this->getArenaPlayerCount($playerLevel, $arena) + 1);
+      $number = $data->get($arena . $playerLevel);
+      $data->set($arena . $playerLevel, $number + 1);
+      $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
+      $playerData->set("currentArena", $arena . $playerLevel);
+      $playerData->set("playing", TRUE);
+      $playerData->save();
       $data->save();
       $this->plugin->getServer()->broadcastMessage("$player has joined $arena in level $playerLevel");
     }
@@ -72,7 +86,12 @@ class EventListener implements Listener {
       $player->sendMessage($this->prefix . "§aYou have joined the $arena arena.");
       $player->teleport(new Position($this->config->get($arena . $playerLevel . "-x"), $this->config->get($arena . $playerLevel . "-y"), $this->config->get($arena . $playerLevel . "-z")));
       $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
-      $data->set($arena . $playerLevel, $this->getArenaPlayerCount($playerLevel, $arena) + 1);
+      $number = $data->get($arena . $playerLevel);
+      $data->set($arena . $playerLevel, $number + 1);
+      $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
+      $playerData->set("currentArena", $arena . $playerLevel);
+      $playerData->set("playing", TRUE);
+      $playerData->save();
       $data->save();
       $this->plugin->getServer()->broadcastMessage("$player has joined $arena in level $playerLevel");
     }
@@ -89,7 +108,7 @@ class EventListener implements Listener {
     
   public function getPlayerLevel($player) {
     $pureperms = $this->plugin->getServer()->getPluginManager()->getPlugin("PurePerms");
-    $group = $pureperms->getUserDataMrg()->getGroup($player);
+    $group = $pureperms->getUserDataMgr()->getGroup($player);
     $groupname = $group->getName();
     $this->plugin->getServer()->broadcastMessage("Player group fetched: $player is $groupname");
     if($groupname === "Leather"){
@@ -109,5 +128,83 @@ class EventListener implements Listener {
     } elseif ($groupname === "Bedrock") {
       return 3;
     }
+  }
+  
+  
+  public function leaveArena($player, $playerLevel, $arena) {
+    if($playerLevel === 3) {
+      $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
+      $number = $data->get($arena . $playerLevel);
+      $data->set($arena . $playerLevel, $number - 1);
+      $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
+      $playerData->set("currentArena", $arena . $playerLevel);
+      $playerData->set("playing", TRUE);
+      $playerData->save();
+      $data->save();
+      $this->plugin->getServer()->broadcastMessage("$player has left $arena in level $playerLevel");
+    }
+    if($playerLevel === 2) {
+      $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
+      $number = $data->get($arena . $playerLevel);
+      $data->set($arena . $playerLevel, $number - 1);
+      $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
+      $playerData->set("currentArena", $arena . $playerLevel);
+      $playerData->set("playing", TRUE);
+      $playerData->save();
+      $data->save();
+      $this->plugin->getServer()->broadcastMessage("$player has left $arena in level $playerLevel");
+    }
+    if($playerLevel === 1) {
+      $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
+      $number = $data->get($arena . $playerLevel);
+      $data->set($arena . $playerLevel, $number - 1);
+      $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
+      $playerData->set("currentArena", $arena . $playerLevel);
+      $playerData->set("playing", TRUE);
+      $playerData->save();
+      $data->save();
+      $this->plugin->getServer()->broadcastMessage("$player has left $arena in level $playerLevel");
+    }
+  }
+  
+  
+  public function playerDeath(PlayerDeathEvent $event) {
+    $prefix = "§l§8[§1KitPvP§8]§r";
+    $player = $event->getPlayer();
+    $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
+    $killer = $event->getDamager();
+    $killerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$killer}.yml");
+    $cause = $player->getLastDamageCause();
+    if($player instanceof Player) {
+      if($damager instanceof Player) {
+        if($playerData->get("playing") { 
+          $msg = "$prefix $player has been killed by $killer using $cause";
+          $event->setDeathMessage($msg);
+          $player->sendMessage("$prefix You have killed $player and have been awarded");
+          $killerKills = $killerData->get("totalKills");
+          $playerDeaths = $playerData->get("totalDeaths");
+          $killerData->set("totalKills", $killerKills + 1);
+          $playerData->set("totalDeaths", $playerDeaths + 1);
+          $playerWorth = $playerData->get("worth");
+          $killerWorth = $killerData->get("worth");
+          $killerData->set("worth", $killerWorth + ($playerWorth * .6));
+          $playerData->set("worth", $playerWorth * .6);
+          $playerLevel = $this->getPlayerLevel($player);
+          $arena = $playerData->get("currentArena");
+          $this->leaveArena($player, $playerLevel, $arena);
+          $playerData->save();
+          $killerData->save();
+        }
+      }
+    }
+  }
+           
+           
+  public function registerPlayer($player) {
+    if(!file_exists($this->plugin->getDataFolder() . "Data/" . "{player}.yml") {
+      $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML, ["totalKills" => 0, "totalDeaths" => 0, "worth" => 0, "currentArena" => "n/a", "playing" => FALSE];
+    } else {
+      return true;
+    } 
   }
 }
