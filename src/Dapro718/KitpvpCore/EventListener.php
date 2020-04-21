@@ -42,11 +42,11 @@ class EventListener implements Listener {
       if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
         if($tile instanceof Sign) {
           if(!file_exists($this->plugin->getDataFolder() . "Data/" . "{player}.yml") {
-            $this->registerPlayer;
+            $this->registerPlayer();
           }
           $line = $tile->getText();
           $playerLevel = $this->getPlayerLevel($player);
-          $arena = strtolower($line[1]) . $playerLevel;
+          $arena = strtolower($line[1]);
           $this->joinArena($player, $playerLevel, $arena);
           $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
           $tile->setLine(2, $data->get($arena . $playerLevel) . " Players.");
@@ -180,18 +180,23 @@ class EventListener implements Listener {
         if($playerData->get("playing") { 
           $msg = "$prefix $player has been killed by $killer using $cause";
           $event->setDeathMessage($msg);
-          $player->sendMessage("$prefix You have killed $player and have been awarded");
           $killerKills = $killerData->get("totalKills");
           $playerDeaths = $playerData->get("totalDeaths");
           $killerData->set("totalKills", $killerKills + 1);
           $playerData->set("totalDeaths", $playerDeaths + 1);
           $playerWorth = $playerData->get("worth");
           $killerWorth = $killerData->get("worth");
-          $killerData->set("worth", $killerWorth + ($playerWorth * .6));
-          $playerData->set("worth", $playerWorth * .6);
+          if($playerWorth === 0) {
+            $killerData->set("worth", $killerWorth + 50)
+          } else {
+            $killerData->set("worth", $killerWorth + ($playerWorth * .6));
+            $playerData->set("worth", $playerWorth * .4);
+          }
           $playerLevel = $this->getPlayerLevel($player);
           $arena = $playerData->get("currentArena");
           $this->leaveArena($player, $playerLevel, $arena);
+          $award = $playerWorth * .6;
+          $player->sendMessage("$prefix You have killed $player and have been awarded ${$award}!");
           $playerData->save();
           $killerData->save();
         }
