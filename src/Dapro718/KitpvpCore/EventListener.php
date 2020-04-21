@@ -39,7 +39,7 @@ class EventListener implements Listener {
     $this->plugin->getServer()->broadcastMessage("Event activated");
     if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) 
       if($tile instanceof Sign) {
-        if(!file_exists($this->plugin->getDataFolder() . "Data/" . "{player}.yml") {
+        if(!file_exists($this->plugin->getDataFolder() . "Data/" . "{$player}.yml")) {
           $this->registerPlayer();
         }
         $line = $tile->getText();
@@ -204,7 +204,7 @@ class EventListener implements Listener {
            
            
   public function registerPlayer($player) {
-    if(!file_exists($this->plugin->getDataFolder() . "Data/" . "{player}.yml") {
+    if(!file_exists($this->plugin->getDataFolder() . "Data/" . "{$player}.yml")) {
       $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML, ["totalKills" => 0, "totalDeaths" => 0, "worth" => 0, "currentArena" => "n/a", "playing" => FALSE];
     } else {
       return true;
