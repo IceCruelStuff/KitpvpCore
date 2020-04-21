@@ -169,7 +169,9 @@ class EventListener implements Listener {
     $prefix = "§l§8[§1KitPvP§8]§r";
     $player = $event->getPlayer();
     $cause = $player->getLastDamageCause();
-    $killer = $cause->getDamager();
+    if($cause instanceof EntityDamageByEntityEvent) {
+      $killer = $cause->getDamager();
+    }
     $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
     $killerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$killer}.yml");
     if($player instanceof Player) {
