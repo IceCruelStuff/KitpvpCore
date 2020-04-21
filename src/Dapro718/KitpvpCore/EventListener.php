@@ -176,7 +176,7 @@ class EventListener implements Listener {
     if($player instanceof Player) {
       if($damager instanceof Player) {
         if($playerData->get("playing") { 
-          $msg = "$prefix $player has been killed by $killer using $cause";
+          $msg = $prefix . $player . " has been killed by " . $killer . " using " . $cause;
           $event->setDeathMessage($msg);
           $killerKills = $killerData->get("totalKills");
           $playerDeaths = $playerData->get("totalDeaths");
@@ -194,7 +194,7 @@ class EventListener implements Listener {
           $arena = $playerData->get("currentArena");
           $this->leaveArena($player, $playerLevel, $arena);
           $award = $playerWorth * .6;
-          $player->sendMessage("$prefix You have killed $player and have been awarded ${$award}!");
+          $player->sendMessage($prefix . " You have killed " . $player . " and have been awarded $" . $award . "!");
           $playerData->save();
           $killerData->save();
         }
