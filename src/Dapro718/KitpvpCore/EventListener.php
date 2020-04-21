@@ -47,7 +47,7 @@ class EventListener implements Listener {
         $arena = strtolower($line[1]);
         $this->joinArena($player, $playerLevel, $arena);
         $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
-        $tile->setLine(2, $data->get($arena . $playerLevel) . " Players.");
+        $tile->setLine(2, $data->get($arena . $playerLevel) . " Players");
       }
     }
   }
