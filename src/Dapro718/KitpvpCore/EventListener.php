@@ -166,7 +166,7 @@ class EventListener implements Listener {
   }
   
   
-  public function playerDeath(PlayerDeathEvent $event) {
+  public function onDeath(PlayerDeathEvent $event) {
     $prefix = "§l§8[§1KitPvP§8]§r";
     $player = $event->getPlayer();
     $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
