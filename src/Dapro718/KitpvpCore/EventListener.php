@@ -37,7 +37,7 @@ class EventListener implements Listener {
     $player = $event->getPlayer();
     $tile = $player->getLevel()->getTile($block);
     $this->plugin->getServer()->broadcastMessage("Event activated");
-    if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) 
+    if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) { 
       if($tile instanceof Sign) {
         if(!file_exists($this->plugin->getDataFolder() . "Data/" . "{$player}.yml")) {
           $this->registerPlayer();
