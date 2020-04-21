@@ -175,7 +175,7 @@ class EventListener implements Listener {
     $cause = $player->getLastDamageCause();
     if($player instanceof Player) {
       if($damager instanceof Player) {
-        if($playerData->get("playing") { 
+        if($playerData->get("playing")) { 
           $msg = ("$prefix $player has been killed by $killer using $cause");
           $event->setDeathMessage($msg);
           $killerKills = $killerData->get("totalKills");
