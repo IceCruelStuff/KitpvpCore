@@ -171,33 +171,33 @@ class EventListener implements Listener {
     $cause = $player->getLastDamageCause();
     if($cause instanceof EntityDamageByEntityEvent) {
       $killer = $cause->getDamager();
-    }
-    $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
-    $killerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$killer}.yml");
-    if($player instanceof Player) {
-      if($killer instanceof Player) {
-        if($playerData->get("playing")) { 
-          $msg = ("$prefix $player has been killed by $killer");
-          $event->setDeathMessage($msg);
-          $killerKills = $killerData->get("totalKills");
-          $playerDeaths = $playerData->get("totalDeaths");
-          $killerData->set("totalKills", $killerKills + 1);
-          $playerData->set("totalDeaths", $playerDeaths + 1);
-          $playerWorth = $playerData->get("worth");
-          $killerWorth = $killerData->get("worth");
-          if($playerWorth === 0) {
-            $killerData->set("worth", $killerWorth + 50);
-          } else {
-            $killerData->set("worth", $killerWorth + ($playerWorth * .6));
-            $playerData->set("worth", $playerWorth * .4);
+      $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
+      $killerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$killer}.yml");
+      if($player instanceof Player) {
+        if($killer instanceof Player) {
+          if($playerData->get("playing")) { 
+            $msg = ("$prefix $player has been killed by $killer");
+            $event->setDeathMessage($msg);
+            $killerKills = $killerData->get("totalKills");
+            $playerDeaths = $playerData->get("totalDeaths");
+            $killerData->set("totalKills", $killerKills + 1);
+            $playerData->set("totalDeaths", $playerDeaths + 1);
+            $playerWorth = $playerData->get("worth");
+            $killerWorth = $killerData->get("worth");
+            if($playerWorth === 0) {
+              $killerData->set("worth", $killerWorth + 50);
+            } else {
+              $killerData->set("worth", $killerWorth + ($playerWorth * .6));
+              $playerData->set("worth", $playerWorth * .4);
+            }
+            $playerLevel = $this->getPlayerLevel($player);
+            $arena = $playerData->get("currentArena");
+            $this->leaveArena($player, $playerLevel, $arena);
+            $award = $playerWorth * .6;
+            $player->sendMessage("$prefix You have killed $player and have been awarded \${$award}!");
+            $playerData->save();
+            $killerData->save();
           }
-          $playerLevel = $this->getPlayerLevel($player);
-          $arena = $playerData->get("currentArena");
-          $this->leaveArena($player, $playerLevel, $arena);
-          $award = $playerWorth * .6;
-          $player->sendMessage("$prefix You have killed $player and have been awarded \${$award}!");
-          $playerData->save();
-          $killerData->save();
         }
       }
     }
