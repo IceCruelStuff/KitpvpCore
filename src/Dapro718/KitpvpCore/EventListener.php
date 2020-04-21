@@ -9,7 +9,6 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\tile\Sign;
 use pocketmine\block\SignChangeEvent;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\Player;
 use pocketmine\event\Level;
 use pocketmine\utils\Config;
@@ -165,7 +164,7 @@ class EventListener implements Listener {
   }
   
   
-  public function onDeath(PlayerDeathEvent $event) {
+  public function playerDeath(PlayerDeathEvent $event) {
     $prefix = "§l§8[§1KitPvP§8]§r";
     $player = $event->getPlayer();
     $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
