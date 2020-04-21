@@ -59,7 +59,7 @@ class EventListener implements Listener {
       $player->teleport(new Position($this->config->get($arena . $playerLevel . "-x"), $this->config->get($arena . $playerLevel . "-y"), $this->config->get($arena . $playerLevel . "-z")));
       $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
       $number = $data->get($arena . $playerLevel);
-      $data->set($arena . $playerLevel, $number + 1)
+      $data->set($arena . $playerLevel, $number + 1);
       $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
       $playerData->set("currentArena", $arena . $playerLevel);
       $playerData->set("playing", TRUE);
@@ -185,7 +185,7 @@ class EventListener implements Listener {
           $playerWorth = $playerData->get("worth");
           $killerWorth = $killerData->get("worth");
           if($playerWorth === 0) {
-            $killerData->set("worth", $killerWorth + 50)
+            $killerData->set("worth", $killerWorth + 50);
           } else {
             $killerData->set("worth", $killerWorth + ($playerWorth * .6));
             $playerData->set("worth", $playerWorth * .4);
