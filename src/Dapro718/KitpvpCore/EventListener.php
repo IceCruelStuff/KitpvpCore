@@ -26,32 +26,30 @@ class EventListener implements Listener {
   public $config;  
   public $prefix;
   public $data;
-  
-  
+ 
   public function __construct(Main $plugin) {
       $this->plugin = $plugin;
   }
-
-  
+ 
   public function onInteract(PlayerInteractEvent $event) {
-      $prefix = "§l§8[§1KitPvP§8]§r";
-      $block = $event->getBlock();
-      $player = $event->getPlayer();
-      $tile = $player->getLevel()->getTile($block);
-      $this->plugin->getServer()->broadcastMessage("Event activated");
-      if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
-        if($tile instanceof Sign) {
-          if(!file_exists($this->plugin->getDataFolder() . "Data/" . "{player}.yml") {
-            $this->registerPlayer();
-          }
-          $line = $tile->getText();
-          $playerLevel = $this->getPlayerLevel($player);
-          $arena = strtolower($line[1]);
-          $this->joinArena($player, $playerLevel, $arena);
-          $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
-          $tile->setLine(2, $data->get($arena . $playerLevel) . " Players.");
+    $prefix = "§l§8[§1KitPvP§8]§r";
+    $block = $event->getBlock();
+    $player = $event->getPlayer();
+    $tile = $player->getLevel()->getTile($block);
+    $this->plugin->getServer()->broadcastMessage("Event activated");
+    if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) 
+      if($tile instanceof Sign) {
+        if(!file_exists($this->plugin->getDataFolder() . "Data/" . "{player}.yml") {
+          $this->registerPlayer();
         }
+        $line = $tile->getText();
+        $playerLevel = $this->getPlayerLevel($player);
+        $arena = strtolower($line[1]);
+        $this->joinArena($player, $playerLevel, $arena);
+        $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
+        $tile->setLine(2, $data->get($arena . $playerLevel) . " Players.");
       }
+    }
   }
   
 
