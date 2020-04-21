@@ -10,7 +10,6 @@ use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\tile\Sign;
 use pocketmine\block\SignChangeEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\Player;
 use pocketmine\event\Level;
 use pocketmine\utils\Config;
