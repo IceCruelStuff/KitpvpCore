@@ -7,6 +7,7 @@ namespace Dapro718\KitpvpCore;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\tile\Sign;
 use pocketmine\block\SignChangeEvent;
 use pocketmine\Player;
@@ -38,7 +39,7 @@ class EventListener implements Listener {
     if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) { 
       if($tile instanceof Sign) {
         if(!file_exists($this->plugin->getDataFolder() . "Data/" . "{$player}.yml")) {
-          $this->registerPlayer();
+          $this->registerPlayer($player);
         }
         $line = $tile->getText();
         $playerLevel = $this->getPlayerLevel($player);
@@ -164,17 +165,16 @@ class EventListener implements Listener {
   }
   
   
-  public function playerDeath(PlayerDeathEvent $event) {
+  public function playerDeath(EntityDeathEvent $event) {
     $prefix = "§l§8[§1KitPvP§8]§r";
     $player = $event->getPlayer();
     $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
-    $killer = $event->getDamager();
+    $killer = $this->getDamager();
     $killerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$killer}.yml");
-    $cause = $player->getLastDamageCause();
     if($player instanceof Player) {
-      if($damager instanceof Player) {
+      if($killer instanceof Player) {
         if($playerData->get("playing")) { 
-          $msg = ("$prefix $player has been killed by $killer using $cause");
+          $msg = ("$prefix $player has been killed by $killer");
           $event->setDeathMessage($msg);
           $killerKills = $killerData->get("totalKills");
           $playerDeaths = $playerData->get("totalDeaths");
