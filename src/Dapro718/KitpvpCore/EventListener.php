@@ -7,6 +7,7 @@ namespace Dapro718\KitpvpCore;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\tile\Sign;
 use pocketmine\block\SignChangeEvent;
