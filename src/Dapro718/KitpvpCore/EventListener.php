@@ -30,6 +30,12 @@ class EventListener implements Listener {
       $this->plugin = $plugin;
   }
  
+  public function onJoin(PlayerJoinEvent $event) {
+    $player = $event->getPlayer()->getName();
+    $this->registerPlayer($player);
+  }
+
+  
   public function onInteract(PlayerInteractEvent $event) {
     $prefix = "§l§8[§1KitPvP§8]§r";
     $block = $event->getBlock();
@@ -38,9 +44,6 @@ class EventListener implements Listener {
     $this->plugin->getServer()->broadcastMessage("Event activated");
     if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) { 
       if($tile instanceof Sign) {
-        if(!file_exists($this->plugin->getDataFolder() . "Data/" . "{$player}.yml")) {
-          $this->registerPlayer($player);
-        }
         $line = $tile->getText();
         $playerLevel = $this->getPlayerLevel($player);
         $arena = strtolower($line[1]);
