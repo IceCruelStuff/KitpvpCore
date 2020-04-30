@@ -104,8 +104,9 @@ class Main extends PluginBase {
     if(!is_dir($this->getDataFolder() . "Data/")){
       mkdir($this->getDataFolder() . "Data/"); }
     $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
-    if(!$playerData->exists("totalKills") {
+    if(!$playerData->exists("totalKills")) {
       $playerData->setAll(["totalKills" => 0, "totalDeaths" => 0, "worth" => 0, "currentArena" => "n/a", "playing" => FALSE]);
     }
+    $playerData->save();
   }
 }
