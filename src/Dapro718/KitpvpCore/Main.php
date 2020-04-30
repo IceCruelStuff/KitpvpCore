@@ -15,6 +15,7 @@ use pocketmine\level\Position;
 use pocketmine\Server;
 use _64FF00\PurePerms\PurePerms;
 use _64FF00\PurePerms\PPGroup;
+use Dapro718\KitpvpCore\FloatingTextParticleCreator;
 
 class Main extends PluginBase {
   
@@ -94,10 +95,34 @@ class Main extends PluginBase {
       }
     }
     $max = count($onlinePlayers) - 1;
-    for ($i = 0;, $i < 10, $i++) {
+    if($max < 10) {
+      for ($i = 0;, $i < 10, $i++) {
       $rand = rand(0, $max);
-      $this->bountyPlayers[$i] = $onlinePlayers[$rand];
-    }
+      $this->bountyPlayers[$i] = $onlinePlayers[$rand]; }
+    } else {
+      for ($i = 0;, $i < 10, $i++) {
+      $rand = rand(0, $max);
+      $this->bountyPlayers[$i] = $onlinePlayers[$rand]; } }
+    foreach ($this->bountyPlayers as $player) {
+      $c = 0
+      $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
+      $kills = $playerData->get("totalKills");
+      if($kills === 0) {
+        $bounty = 1000;
+      } else {
+        $min = $kills * 1000;
+        $max = $kills * 2000;
+        $bounty = rand($min, $max); }
+      $playerData->set("bounty", true);
+      $playerData->set("bounty-amount", $bounty);
+      $line[$c] = ($c++) . ". {$player}: \${$bounty}.\n"; }
+    for ($j = 0; $j < count($line); $j++) {
+      $text = $text . $line[$j]; }
+    $title = "Bounties";
+    $ftp = new FloatingTextParticleCreator(new Position(5, 100, 5, Server::getInstance()->getLevelByName('world')), $text, $title);
+    Main::$particles[$ftp->getEntityId()] = $ftp;
+    Server::getInstance()->getLevelByName('world')->addParticle($ftp, Server::getInstance()->getLevelByName('world')->getPlayers());
+      
     
     
   
@@ -108,7 +133,7 @@ class Main extends PluginBase {
     $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
     $master = new Config($this->getDataFolder() . "Data/" . "master.yml", Config::YAML);
     if(!$playerData->exists("totalKills")) {
-      $playerData->setAll(["totalKills" => 0, "totalDeaths" => 0, "worth" => 0, "currentArena" => "n/a", "playing" => FALSE]);
+      $playerData->setAll(["totalKills" => 0, "totalDeaths" => 0, "worth" => 0, "currentArena" => "n/a", "playing" => FALSE, "bounty" => false, "bounty-amount" => 0]);
       $players = $master->get("players");
       $players = array_push($players, $player);
       $master->set("players", $players);
