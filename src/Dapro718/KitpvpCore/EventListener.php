@@ -35,6 +35,10 @@ class EventListener implements Listener {
     $player = $event->getPlayer()->getName();
     $this->plugin->registerPlayer($player);
   }
+  
+  public function onLeave(PlayerLeaveEvent $event) {
+    $play
+    $playerStats =
 
   public function onInteract(PlayerInteractEvent $event) {
     $prefix = "§l§8[§1KitPvP§8]§r";
