@@ -21,48 +21,33 @@ class Main extends PluginBase {
   public $config;
   public $joinleave;
 
-  public function onLoad(): void {
-      $this->getLogger()->info("Loaded");
-  }
-  
-  
   public function onEnable() {
-      $this->getLogger()->info("Enabled");
       $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
       $this->config = $this->getConfig();
   }
-  
-  
-  public function onDisable(): void {
-      $this->getLogger()->info("Disabled");
-  }
-
-  
-
+ 
   public function joinArena($player, $playerLevel, $arena) {
     $prefix = "§l§8[§1KitPvP§8]§r";
     $player->sendMessage($prefix . "§aYou have joined the $arena arena.");
     $player->teleport(new Position($this->config->get($arena . $playerLevel . "-x"), $this->config->get($arena . $playerLevel . "-y"), $this->config->get($arena . $playerLevel . "-z")));
     $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
-    $number = $data->get($arena . $playerLevel);
-    $data->set($arena . $playerLevel, $number + 1);
+    $number = $data->get($arena);
+    $data->set($arena, $number + 1);
     $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml");
-    $playerData->set("currentArena", $arena . $playerLevel);
+    $playerData->set("currentArena", $arena);
     $playerData->set("playing", TRUE);
     $playerData->save();
     $data->save();
     $this->getServer()->broadcastMessage("$player has joined $arena in level $playerLevel");
   }
   
-  
-  public function getArenaPlayerCount($playerLevel, $arena) {
+  public function getArenaPlayerCount($arena) {
     $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
-    $count = $this->config->get($arena . $playerLevel);
+    $count = $this->config->get($arena);
     $this->getServer()->broadcastMessage("Arena data fetched: $arena with $count players");
     return $count;
   }
 
-    
   public function getPlayerLevel($player) {
     $pureperms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
     $group = $pureperms->getUserDataMgr()->getGroup($player);
@@ -87,13 +72,12 @@ class Main extends PluginBase {
     }
   }
   
-  
-  public function leaveArena($player, $playerLevel, $arena) {
+  public function leaveArena($player, $arena) {
       $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
-      $number = $data->get($arena . $playerLevel);
-      $data->set($arena . $playerLevel, $number - 1);
+      $number = $data->get($arena);
+      $data->set($arena, $number - 1);
       $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml");
-      $playerData->set("currentArena", $arena . $playerLevel);
+      $playerData->set("currentArena", $arena);
       $playerData->set("playing", false);
       $playerData->save();
       $data->save();
