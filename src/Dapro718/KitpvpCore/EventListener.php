@@ -39,7 +39,7 @@ class EventListener implements Listener {
   public function onInteract(PlayerInteractEvent $event) {
     $prefix = "§l§8[§1KitPvP§8]§r";
     $block = $event->getBlock();
-    $player = $event->getPlayer();
+    $player = $event->getPlayer()->getName();
     $tile = $player->getLevel()->getTile($block);
     $this->plugin->getServer()->broadcastMessage("Event activated");
     if($event->getAction() === PlayerInteractEvent::RIGHT_CLICK_BLOCK) { 
@@ -49,7 +49,7 @@ class EventListener implements Listener {
         $arena = strtolower($line[1]);
         $this->plugin->joinArena($player, $playerLevel, $arena);
         $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
-        $tile->setLine(2, $data->get($arena . $playerLevel) . " Players");
+        $tile->setLine(2, $data->get($arena) . " Players");
       }
     }
   }
@@ -57,10 +57,10 @@ class EventListener implements Listener {
   
   public function playerDeath(PlayerDeathEvent $event) {
     $prefix = "§l§8[§1KitPvP§8]§r";
-    $player = $event->getPlayer();
+    $player = $event->getPlayer()->getName();
     $cause = $player->getLastDamageCause();
     if($cause instanceof EntityDamageByEntityEvent) {
-      $killer = $cause->getDamager();
+      $killer = $cause->getDamager()->getName();
       $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
       $killerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$killer}.yml");
       if($player instanceof Player) {
@@ -80,14 +80,23 @@ class EventListener implements Listener {
               $killerData->set("worth", $killerWorth + ($playerWorth * .6));
               $playerData->set("worth", $playerWorth * .4);
             }
-            $playerLevel = $this->getPlayerLevel($player);
             $arena = $playerData->get("currentArena");
-            $this->plugin->leaveArena($player, $playerLevel, $arena);
+            $this->plugin->leaveArena($player, $arena);
             $award = $playerWorth * .6;
             $player->sendMessage("$prefix You have killed $player and have been awarded \${$award}!");
             $playerData->save();
             $killerData->save();
           }
+        } else {
+          $msg = ("$prefix $player has died.");
+          $event->setDeathMessage($msg);
+          $playerDeaths = $playerData->get("totalDeaths");
+          $playerData->set("totalDeaths", $playerDeaths + 1);
+          $playerWorth = $playerData->get("worth");
+          $playerData->set("worth", $playerWorth * .4);
+          $arena = $playerData->get("currentArena");
+          $this->plugin->leaveArena($player, $arena);
+          $playerData->save();
         }
       }
     }
