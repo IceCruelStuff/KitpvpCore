@@ -42,6 +42,18 @@ class Main extends PluginBase {
     $this->getServer()->broadcastMessage("$player has joined $arena in level $playerLevel");
   }
   
+  public function leaveArena($player, $arena) {
+      $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
+      $number = $data->get($arena);
+      $data->set($arena, $number - 1);
+      $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml");
+      $playerData->set("currentArena", $arena);
+      $playerData->set("playing", false);
+      $playerData->save();
+      $data->save();
+      $this->getServer()->broadcastMessage("$player has left $arena in level $playerLevel");
+    }
+  
   public function getArenaPlayerCount($arena) {
     $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
     $count = $this->config->get($arena);
@@ -72,18 +84,6 @@ class Main extends PluginBase {
       return 3;
     }
   }
-  
-  public function leaveArena($player, $arena) {
-      $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
-      $number = $data->get($arena);
-      $data->set($arena, $number - 1);
-      $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml");
-      $playerData->set("currentArena", $arena);
-      $playerData->set("playing", false);
-      $playerData->save();
-      $data->save();
-      $this->getServer()->broadcastMessage("$player has left $arena in level $playerLevel");
-    }
   
   public function createBountyBoard() {
     $master = new Config($this->getDataFolder() . "Data/" . "master.yml", Config::YAML);
@@ -137,5 +137,48 @@ class Main extends PluginBase {
       $master->save();
     }
     $playerData->save();
+  }
+  
+  //api functions
+  public function getKills($player) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
+    $kills = $playerData->get("totalkills");
+    return $kills;
+  }
+  
+  public function getDeaths($player) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
+    $deaths = $playerData->get("totalDeaths");
+    return $deaths;
+  }
+  
+  public function getWorth($player) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
+    $worth = $playerData->get("worth");
+    return $worth;
+  }
+  
+  public function getCurrentArena($player) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
+    $currentArena = $playerData->get("currentArena");
+    return $currentArena;
+  }
+  
+  public function getKills($player) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
+    $kills = $playerData->get("totalkills");
+    return $kills;
+  }
+  
+  public function getKills($player) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
+    $kills = $playerData->get("totalkills");
+    return $kills;
+  }
+  
+  public function getKills($player) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
+    $kills = $playerData->get("totalkills");
+    return $kills;
   }
 }
