@@ -101,10 +101,11 @@ class Main extends PluginBase {
   
   
   public function registerPlayer($player) {
-    if(!file_exists($this->getDataFolder() . "Data/" . "{$player}.yml")) {
-      $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML, ["totalKills" => 0, "totalDeaths" => 0, "worth" => 0, "currentArena" => "n/a", "playing" => FALSE]);
-    } else {
-      return true;
-    } 
+    if(!is_dir($this->getDataFolder() . "Data/")){
+			mkdir($this->getDataFolder() . "Data/"); }
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML)
+    if(!$playerData->exists("totalKills") {
+      $playerData->set("totalKills" => 0, "totalDeaths" => 0, "worth" => 0, "currentArena" => "n/a", "playing" => FALSE]);
+    }
   }
 }
