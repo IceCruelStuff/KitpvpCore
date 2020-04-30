@@ -84,13 +84,35 @@ class Main extends PluginBase {
       $this->getServer()->broadcastMessage("$player has left $arena in level $playerLevel");
     }
   
+  public function createBountyBoard() {
+    $master = new Config($this->getDataFolder() . "Data/" . "master.yml", Config::YAML);
+    $players = $master->get("players");
+    $onlinePlayers = array();
+    foreach ($players as $player) {
+      if($player->isOnline()) {
+        $onlinePlayers = array_push($onlinePlayers, $player);
+      }
+    }
+    $max = count($onlinePlayers) - 1;
+    for ($i = 0;, $i < 10, $i++) {
+      $rand = rand(0, $max);
+      $this->bountyPlayers[$i] = $onlinePlayers[$rand];
+    }
+    
+    
+  
   
   public function registerPlayer($player) {
     if(!is_dir($this->getDataFolder() . "Data/")){
       mkdir($this->getDataFolder() . "Data/"); }
     $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
+    $master = new Config($this->getDataFolder() . "Data/" . "master.yml", Config::YAML);
     if(!$playerData->exists("totalKills")) {
       $playerData->setAll(["totalKills" => 0, "totalDeaths" => 0, "worth" => 0, "currentArena" => "n/a", "playing" => FALSE]);
+      $players = $master->get("players");
+      $players = array_push($players, $player);
+      $master->set("players", $players);
+      $master->save();
     }
     $playerData->save();
   }
