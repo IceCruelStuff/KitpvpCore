@@ -96,15 +96,15 @@ class Main extends PluginBase {
     }
     $max = count($onlinePlayers) - 1;
     if($max < 10) {
-      for ($i = 0;, $i < 10, $i++) {
+      for ($i = 0; $i < 10; $i++) {
       $rand = rand(0, $max);
       $this->bountyPlayers[$i] = $onlinePlayers[$rand]; }
     } else {
-      for ($i = 0;, $i < 10, $i++) {
+      for ($i = 0; $i < 10; $i++) {
       $rand = rand(0, $max);
       $this->bountyPlayers[$i] = $onlinePlayers[$rand]; } }
     foreach ($this->bountyPlayers as $player) {
-      $c = 0
+      $c = 0;
       $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
       $kills = $playerData->get("totalKills");
       if($kills === 0) {
@@ -122,11 +122,8 @@ class Main extends PluginBase {
     $ftp = new FloatingTextParticleCreator(new Position(5, 100, 5, Server::getInstance()->getLevelByName('world')), $text, $title);
     Main::$particles[$ftp->getEntityId()] = $ftp;
     Server::getInstance()->getLevelByName('world')->addParticle($ftp, Server::getInstance()->getLevelByName('world')->getPlayers());
-      
+  }
     
-    
-  
-  
   public function registerPlayer($player) {
     if(!is_dir($this->getDataFolder() . "Data/")){
       mkdir($this->getDataFolder() . "Data/"); }
