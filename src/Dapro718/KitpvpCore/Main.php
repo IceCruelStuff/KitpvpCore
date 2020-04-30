@@ -42,31 +42,31 @@ class Main extends PluginBase {
   public function joinArena($player, $playerLevel, $arena) {
     $player->sendMessage($this->prefix . "§aYou have joined the $arena arena.");
     $player->teleport(new Position($this->config->get($arena . $playerLevel . "-x"), $this->config->get($arena . $playerLevel . "-y"), $this->config->get($arena . $playerLevel . "-z")));
-    $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
+    $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
     $number = $data->get($arena . $playerLevel);
     $data->set($arena . $playerLevel, $number + 1);
-    $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml");
     $playerData->set("currentArena", $arena . $playerLevel);
     $playerData->set("playing", TRUE);
     $playerData->save();
     $data->save();
-    $this->plugin->getServer()->broadcastMessage("$player has joined $arena in level $playerLevel");
+    $this->getServer()->broadcastMessage("$player has joined $arena in level $playerLevel");
   }
   
   
   public function getArenaPlayerCount($playerLevel, $arena) {
-    $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
+    $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
     $count = $this->config->get($arena . $playerLevel);
-    $this->plugin->getServer()->broadcastMessage("Arena data fetched: $arena with $count players");
+    $this->getServer()->broadcastMessage("Arena data fetched: $arena with $count players");
     return $count;
   }
 
     
   public function getPlayerLevel($player) {
-    $pureperms = $this->plugin->getServer()->getPluginManager()->getPlugin("PurePerms");
+    $pureperms = $this->getServer()->getPluginManager()->getPlugin("PurePerms");
     $group = $pureperms->getUserDataMgr()->getGroup($player);
     $groupname = $group->getName();
-    $this->plugin->getServer()->broadcastMessage("Player group fetched: $player is $groupname");
+    $this->getServer()->broadcastMessage("Player group fetched: $player is $groupname");
     if($groupname === "Leather"){
       return 1;
     } elseif ($groupname === "Chain") {
@@ -88,21 +88,21 @@ class Main extends PluginBase {
   
   
   public function leaveArena($player, $playerLevel, $arena) {
-      $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
+      $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
       $number = $data->get($arena . $playerLevel);
       $data->set($arena . $playerLevel, $number - 1);
-      $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml");
+      $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml");
       $playerData->set("currentArena", $arena . $playerLevel);
       $playerData->set("playing", false);
       $playerData->save();
       $data->save();
-      $this->plugin->getServer()->broadcastMessage("$player has left $arena in level $playerLevel");
+      $this->getServer()->broadcastMessage("$player has left $arena in level $playerLevel");
     }
   
   
   public function registerPlayer($player) {
-    if(!file_exists($this->plugin->getDataFolder() . "Data/" . "{$player}.yml")) {
-      $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML, ["totalKills" => 0, "totalDeaths" => 0, "worth" => 0, "currentArena" => "n/a", "playing" => FALSE]);
+    if(!file_exists($this->getDataFolder() . "Data/" . "{$player}.yml")) {
+      $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML, ["totalKills" => 0, "totalDeaths" => 0, "worth" => 0, "currentArena" => "n/a", "playing" => FALSE]);
     } else {
       return true;
     } 
