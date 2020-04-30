@@ -40,7 +40,8 @@ class Main extends PluginBase {
   
 
   public function joinArena($player, $playerLevel, $arena) {
-    $player->sendMessage($this->prefix . "§aYou have joined the $arena arena.");
+    $prefix = "§l§8[§1KitPvP§8]§r";
+    $player->sendMessage($prefix . "§aYou have joined the $arena arena.");
     $player->teleport(new Position($this->config->get($arena . $playerLevel . "-x"), $this->config->get($arena . $playerLevel . "-y"), $this->config->get($arena . $playerLevel . "-z")));
     $data = new Config($this->getDataFolder() . "arenas.yml", Config::YAML);
     $number = $data->get($arena . $playerLevel);
