@@ -8,6 +8,7 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\tile\Sign;
 use pocketmine\block\SignChangeEvent;
@@ -36,9 +37,19 @@ class EventListener implements Listener {
     $this->plugin->registerPlayer($player);
   }
   
-  public function onLeave(PlayerLeaveEvent $event) {
-    $play
-    $playerStats =
+  public function onLeave(PlayerQuitEvent $event) {
+    $player = $event->getPlayer()->getName();
+    $playerData = new Config($this->plugin->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
+    $data = new Config($this->plugin->getDataFolder() . "arenas.yml", Config::YAML);
+    $playing = $playerData->get("playing");
+    if($playing) {
+      $arena = $playerData->get("currentArena");
+      $this->plugin->leaveArena($player, $arena);
+    }
+    if(in_array($player, $this->plugin->bountyPlayers, true) {
+      $this->plugin->createBountyBoard();
+    }
+  }
 
   public function onInteract(PlayerInteractEvent $event) {
     $prefix = "§l§8[§1KitPvP§8]§r";
