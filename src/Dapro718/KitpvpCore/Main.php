@@ -21,7 +21,8 @@ class Main extends PluginBase {
   
   public $config;
   public $joinleave;
-
+  public $bountyPlayers = [];
+  
   public function onEnable() {
       $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
       $this->config = $this->getConfig();
@@ -47,7 +48,7 @@ class Main extends PluginBase {
       $number = $data->get($arena);
       $data->set($arena, $number - 1);
       $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml");
-      $playerData->set("currentArena", $arena);
+      $playerData->set("currentArena", "n/a");
       $playerData->set("playing", false);
       $playerData->save();
       $data->save();
@@ -98,11 +99,13 @@ class Main extends PluginBase {
     if($max < 10) {
       for ($i = 0; $i < 10; $i++) {
       $rand = rand(0, $max);
-      $this->bountyPlayers[$i] = $onlinePlayers[$rand]; }
+      $this->bountyPlayers[$i] = $onlinePlayers[$rand]; 
+      unset($onlinePlayers[$rand]; }
     } else {
       for ($i = 0; $i < 10; $i++) {
       $rand = rand(0, $max);
-      $this->bountyPlayers[$i] = $onlinePlayers[$rand]; } }
+      $this->bountyPlayers[$i] = $onlinePlayers[$rand];
+      unset($onlinePlayers[$rand]; } }
     foreach ($this->bountyPlayers as $player) {
       $c = 0;
       $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
@@ -112,10 +115,13 @@ class Main extends PluginBase {
       } else {
         $min = $kills * 1000;
         $max = $kills * 2000;
-        $bounty = rand($min, $max); }
+        $bounty = rand($min, $max); 
+      }
       $playerData->set("bounty", true);
       $playerData->set("bounty-amount", $bounty);
-      $line[$c] = ($c++) . ". {$player}: \${$bounty}.\n"; }
+      $line[$c] = ($c++) . ". {$player}: \${$bounty}.\n";
+      $playerData->save();
+    }
     for ($j = 0; $j < count($line); $j++) {
       $text = $text . $line[$j]; }
     $title = "Bounties";
@@ -141,44 +147,86 @@ class Main extends PluginBase {
   
   //api functions
   public function getKills($player) {
-    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
     $kills = $playerData->get("totalkills");
     return $kills;
   }
   
   public function getDeaths($player) {
-    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
     $deaths = $playerData->get("totalDeaths");
     return $deaths;
   }
   
   public function getWorth($player) {
-    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
     $worth = $playerData->get("worth");
     return $worth;
   }
   
   public function getCurrentArena($player) {
-    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
     $currentArena = $playerData->get("currentArena");
     return $currentArena;
   }
   
-  public function getKills($player) {
-    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
-    $kills = $playerData->get("totalkills");
-    return $kills;
+  public function getPlaying($player) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
+    $playing = $playerData->get("playing");
+    return $playing;
   }
   
-  public function getKills($player) {
-    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
-    $kills = $playerData->get("totalkills");
-    return $kills;
+  public function getBounty($player) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
+    $bounty = $playerData->get("bounty");
+    return $bounty;
   }
   
-  public function getKills($player) {
-    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config.YAML);
-    $kills = $playerData->get("totalkills");
-    return $kills;
+  public function getBountyAmount($player) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
+    $bA = $playerData->get("bounty-amount");
+    return $bA;
+  }
+  
+  public function setKills($player, $value) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
+    $playerData->set("totalKills", $value);
+    $playerData->save();
+  }
+  
+  public function setDeaths($player, $value) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
+    $playerData->set("totalDeaths", $value);
+    $playerData->save();
+  }
+  
+  public function setWorth($player, $value) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
+    $playerData->set("worth", $value);
+    $playerData->save();
+  }
+  
+  public function setCurrentArena($player, $value) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
+    $playerData->set("currentArena", $value);
+    $playerData->save();
+  }
+  
+  public function setPlaying($player, $value) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
+    $playerData->set("playing", $value);
+    $playerData->save();
+  }
+  
+  public function setBounty($player, $value) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
+    $playerData->set("bounty", $value);
+    $playerData->save();
+  }
+  
+  public function setBountyAmount($player, $value) {
+    $playerData = new Config($this->getDataFolder() . "Data/" . "{$player}.yml", Config::YAML);
+    $playerData->set("bounty-amount", $value);
+    $playerData->save();
   }
 }
